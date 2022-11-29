@@ -1,0 +1,35 @@
+#define EXTERNAL_OSS  fillcolor="#648fff" fontcolor="white"
+#define LLNL_OSS      fillcolor="#FFB000" fontcolor="#333333"
+#define LLNL_INTERNAL fillcolor="#dc267f" fontcolor="white"
+#define LINE          "#999999"
+
+digraph G {
+  labelloc = "b"
+  rankdir = "TB"
+  ranksep = "1"
+  edge[penwidth=4 color=LINE]
+  node[
+     fontname=Monaco,
+     penwidth=4,
+     fontsize=24,
+     margin=.2,
+     shape=box,
+     color=LINE
+     fillcolor=lightblue,
+     style="rounded,filled"
+  ]
+
+subgraph clusterMain {
+    fontname="Helvetica,Arial,sans-serif"
+    node [fontname="Helvetica,Arial,sans-serif"]
+    edge [fontname="Helvetica,Arial,sans-serif"]
+
+    label = "Types of Packages"
+    labelloc="t"
+    fontsize = 24
+    color = "white"
+    "External, Open Source" [EXTERNAL_OSS]
+    "LLNL, Open Source" [LLNL_OSS]
+    "LLNL, Internal" [LLNL_INTERNAL]
+  }
+}
