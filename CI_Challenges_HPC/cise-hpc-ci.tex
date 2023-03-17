@@ -61,17 +61,17 @@ resources, e.g., those on the Top500 list of the world's fastest machines~\cite{
 HPC sites range from universities with smaller clusters of commodity machines to large,
 GPU-accelerated supercomputers at national computing facilities.
 
-HPC systems are not useful without application software. Since around the 1940s, HPC
-applications have spanned the computational science domains (simulations and modeling in
-climate, physics, chemistry, engineering, etc.) More recently, the field grew
+HPC systems need application software to be useful. Since around the 1940s, HPC
+applications have spanned the computational science domains: simulations and modeling in
+climate, physics, chemistry, engineering, etc. More recently, the field grew
 to include applications in data analysis and machine learning.
 All of these applications rely on other software, from operating systems to libraries
-(e.g., for communications and math), and still more software is used in the development
+(e.g., for communications and math), and still more software is needed in the development
 process: compilation, testing, packaging, and distribution.
 
 Historically, staff at HPC sites developed their own applications, with the vendor of the
-HPC system providing the operating system, compilers, and math libraries. Export and
-other data sensitivity concerns limit access to a significant number of HPC applications.
+HPC system providing the operating system, compilers, and math libraries. Export controls and
+other data sensitivity concerns limit access to a large number of HPC applications.
 Because of these and more general security concerns, HPC sites only grant access to a set
 of known account holders. However, a large fraction of
 today's software is developed on social coding platforms like GitHub and GitLab, which
@@ -97,13 +97,13 @@ authors on different project teams, and they rely heavily on publicly-available 
 proprietary multi-physics application used on HPC machines at Lawrence Livermore
 National Laboratory (LLNL). These packages include core scientific libraries and
 utility libraries for logging, math, I/O, programming models, performance portability,
-memory management, and other purposes. There are also a number of build-time
-dependencies like compilers and testing frameworks.
+memory management, and other purposes. Anumber of build-time
+dependencies like compilers and testing frameworks are also included.
 
 Even though 30 core components of Ares are LLNL-proprietary, the other 85 packages are
 open source. Of these, 12 are publicly developed by LLNL on GitHub, and the remaining 71
 packages are open-source packages developed by others. This situation is not unusual;
-{\it most} modern software leverages and depends on open source. It would be impossible, or at
+{\it most} modern software leverages and depends on open source components. It would be impossible, or at
 least impractically expensive, for a single organization to reimplement all the capabilities
 provided by the modern open-source software ecosystem.
 
@@ -111,9 +111,9 @@ The cost of software reuse, however, is integration complexity. On a project dev
 by one team, that team makes commits to a common repository, which keeps the project consistent.
 With large, integrated systems, different teams may develop each component, and
 developers must ensure that versions of {\it all} components work together.
-Unfortunately, open-source developers do not have access to HPC resources, and even
+Unfortunately, most open-source developers do not have access to HPC resources, and even
 if they had access, many do not have the time to manually test their packages
-in HPC-like environments. HPC developers who leverage open source must typically be ready to do
+in HPC-like environments. HPC developers who leverage open source software must typically be ready to do
 (sometimes extensive) porting and integration testing in order to get the open
 components to work well on closed systems.
 
@@ -121,7 +121,7 @@ components to work well on closed systems.
 
 HPC systems are typically designed and built to meet specific local requirements, balancing
 expected workload characteristics, hardware options (e.g., number and type of CPUs, GPUs,
-accelerators; internal networking; storage), packaging, cooling, external networking,
+and other accelerators; internal networking; storage), packaging, cooling, external networking,
 energy usage, cost, etc.
 For each system, key components of the local software stack are often bespoke.
 For example, proprietary MPI implementations like Cray MPI can only run
@@ -146,16 +146,16 @@ custom environments they can bring their {\it own} containerized test environmen
 \subsection{Replicating HPC environments}
 
 Due to ubiquitous cloud computing, CI is the norm outside of HPC. It has never been
-easier to set up automated test environments in {\it widely-used} software environments,
-but as discussed above, HPC environments are, by definition, special.
+easier to set up automated test environments in {\it widely-used} software environments.
+But, as discussed above, HPC environments are, by definition, special.
 For example, it is seldom possible to reliably test {\it optimized} CPU builds in
 cloud CI, as the fleet of test systems used by cloud virtual machines (VMs) is often heterogeneous and one
-cannot request a that a test run on a specific microarchitecture. So far, there is no (free) cloud-based
+cannot request that a test be run on a specific microarchitecture. So far, there is no (free) cloud-based
 CI for GPUs.
 
 Testing scientific workflow systems is even harder. Each workflow system is essentially
 a distributed application, and testing a workflow system requires access to the job
-submission interface. This access can include include authentication and authorization from
+submission interface. This access can include authentication and authorization from
 remote systems, local environments and configurations, batch scheduler parameters, etc.
 Because resource managers are used to run the CI system itself, it is
 difficult to vary and test system software and resource managers {\it within} the CI system. In
