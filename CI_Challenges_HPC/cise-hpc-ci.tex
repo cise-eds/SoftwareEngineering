@@ -129,7 +129,7 @@ Finally, authorization and access may be set by site policies that are often dev
 
 
 
-\section{HPC BUILD \& TEST CHALLENGES}
+\section{ROADBLOCKS TO CI IN HPC}
 
 Open-source developers are now accustomed to widely available compute cycles for
 continuous integration. Major code hosting sites
@@ -137,11 +137,12 @@ continuous integration. Major code hosting sites
 these sites offer free CI services. Developers can attach workflows to their repositories that run tests
 concurrently across Linux, macOS, and Windows, and if they need to test in
 custom environments they can bring their {\it own} containerized test environments.
+In HPC settings, however, a number of hurdles prevent adoption of automated code building and testing.
 
-\subsection{Replicating HPC environments}
+\subsection{HPC environments are hard to replicate}
 
 Due to ubiquitous cloud computing, CI is the norm outside of HPC. It has never been
-easier to set up automated test environments in {\it widely-used} software environments.
+easier to set up automated testing in widely-used software environments.
 But, as discussed above, HPC environments are, by definition, special.
 For example, it is seldom possible to reliably test {\it optimized} CPU builds in
 cloud CI, as the fleet of test systems used by cloud virtual machines (VMs) is often heterogeneous and one
@@ -157,9 +158,8 @@ difficult to vary and test system software and resource managers {\it within} th
 this case, we need to see how the system is set up in practice, and not completely
 isolate from it. We also need interfaces and abstractions that allow us to test
 that the system works across different schedulers and configurations.
-
 Without the ability to replicate the software environment of popular HPC systems, it is
-very difficult to ensure that open-source software will continue {\it working} on them.
+very difficult to ensure that open-source software will continue working on them.
 
 \subsection{Security challenges}
 
@@ -175,8 +175,8 @@ that build and test the changed code in cloud environments.
 Developers and maintainers often want to instead trigger jobs on a set of HPC platforms.
 %
 While the cloud allows users to provision isolated virtual machines and even isolated
-virtual networks for CI jobs, most HPC systems lack this level of isolation. Sites implement
-HPC security at the facility boundary, allowing only trusted users in.
+virtual networks for CI jobs, most HPC systems lack this level of isolation. HPC sites implement
+security at the facility boundary, allowing only trusted users in.
 Once on the system, all users can access the shared filesystem and can
 connect to compute nodes over the cluster network. A privilege escalation in this
 environment could give a user access to other users' files, which may be export-controlled
@@ -192,16 +192,17 @@ because they want their changes to be merged. If fixes are made after the fact, 
 be very difficult to keep fast-moving projects working for HPC.
 
 
-\subsection{Administrative and Political challenges}
+\subsection{Administrative and political challenges}
 
-It can be difficult to make progress on solutions to the above problems for a number of
-administrative and political reasons. First, HPC sites do not typically prioritize build
+A number of administrative and political reasons can hinder 
+progress on solutions to the above problems.
+First, HPC sites do not typically prioritize build
 or test cycles, because this is perceived to reduce cycles available
 for production science runs, which is typically their raison d'\^etre. CI jobs tend
 to be small and numerous, as opposed to the
 more traditional larger, longer-running HPC jobs, and queuing policies that support this type of
 work are not well understood, especially for heavily utilized systems with mostly larger jobs.
-When asked how many cycles are needed for testing, users reply with very large numbers and
+When asked how many cycles are needed for testing, users often reply with large numbers and
 the need to test at scale. Facilities are reluctant to provide any one project
 with a large testing allocation.
 
@@ -209,7 +210,7 @@ The tradeoff between using cycles for testing and saving cycles on production co
 may fail is not easy to quantify, but if public CI systems are any benchmark, a large
 fraction of the benefit of CI can be realized through short-running builds and smoke
 tests. Cloud CI services impose strict limits on job runtimes and resource
-usage---typically short numbers of hours and one or two CPUs per job. All but the
+usage---typically just a few hours and one or two CPUs per job. All but the
 largest codes can be built and tested for correctness within this footprint, at least at
 a coarse granularity. Providing separate queues with similar policies on HPC systems
 would require only a small fraction of overall system CPU hours, and while this approach
@@ -226,8 +227,8 @@ applications on bare metal instead of in VMs. Meanwhile, clouds have developed v
 lightweight, secure VM solutions (e.g., Amazon Web Service's Nitro hypervisor) with
 almost no virtualization overhead.
 
-Finally, there is only limited understanding of modern development workflows among HPC
-center leadership. It is difficult to grasp the extent to which open-source software has spread
+Finally, HPC center leadership has limited understanding of modern development workflows. 
+It is difficult to grasp the extent to which open-source software has spread
 throughout the scientific software ecosystem, the rate at which modern software is
 developed, and the interdependence of packages. The idea that key science applications
 rely on externally developed software, that helping external software projects test on
@@ -239,7 +240,7 @@ developers.
 \section{POTENTIAL SOLUTIONS}
 
 Building and testing software on HPC systems has always been hard, but some solutions
-have recently begun to emerge.
+to the challenges presented above have recently begun to emerge.
 
 \subsection{Wisdom of the crowds}
 
@@ -257,24 +258,24 @@ fail in these environments.
 
 For {\it internal}, trusted projects at HPC centers, projects like Jacamar CI~\cite{jacamar-ci}
 solve some of the security problems. They allow users to run CI jobs {\it as themselves} on HPC
-machines, preserving the OS-level security boundaries that HPC center require users to
+machines, preserving the OS-level security boundaries that HPC centers require users to
 adhere to. With Jacamar, one user cannot access and steal another user's data through the CI
 system.
 While internal projects {\it can} pull in trusted versions of external
-software (e.g. recent releases), integration testing is still difficult. Internal
+software (e.g., recent releases), integration testing is still difficult. Internal
 teams cannot easily test changes from PRs, because the changes in a PR cannot be
 attributed to any trusted HPC center user. Without the ability to test PRs, incompatibilities
 or bugs can be introduced through dependencies. Either the site must attribute every
 PR to a known user, which is often not possible, or they must isolate the untrusted code
 in its own environment.
 
-\subsection{Separate resources}
+\subsection{Separate resources for CI}
 
 HPC sites are considering setting up separate resources for open-source CI. One of the
 authors has been involved in such an effort at LLNL, to set up an isolated cluster {\it
   without} sensitive data, where public CI jobs can run with little risk to the main
 HPC resources. The challenge with this approach is that it
-duplicates effort---HPC system administrators themselves are a scarce resource, and
+duplicates effort---HPC system administrators are a scarce resource, and
 maintaining an additional machine in a different network zone requires redundant work.
 It is also difficult to ensure that the separate machine stays up to date with the main
 systems.
@@ -283,10 +284,10 @@ systems.
 
 As customers have come to rely on an increasing volume of open-source software, HPC vendors have
 shown more interest in ensuring that this software works well on the platforms
-they offer.  More cloud vendors are producing their own HPC
-offerings, where users can easily set up their own clusters in the cloud to run
+they offer.  At the same time, more cloud vendors are producing their own HPC
+offerings, and users can easily set up clusters in the cloud to run
 HPC jobs. These clusters can even use a wide range of resource managers, like SLURM and PBS.
-However, such environments are not free.
+Such environments are not free, of course.
 
 HPC vendors {\it may} begin to provide free, public cloud CI resources that open-source
 developers could use to test their software. For large projects like
@@ -304,8 +305,8 @@ so its versatility for build and test use cases is limited. It cannot be run in 
 cloud, where adequate isolation and cycles are available.
 
 For commodity clusters, it may be easier to provide containerized reproductions of the
-production HPC environment, as there are not as many licensing issues involved. However,
-since most HPC sites are still administered very manually, HPC administrators will need
+production HPC environment, as there are not as many licensing issues involved. 
+Since most HPC sites are still administered very manually, HPC administrators will need
 to lean into a culture of automation. If the site can provision the production environment
 automatically, they can reliably provide a container with {\it exactly} the
 same software that the main HPC site runs.
@@ -317,7 +318,7 @@ XSEDE environment, which operated between 2011 and 2022, but the containerizatio
 component did not make it into the final, funded project.
 
 More recently, NASA Ames~\cite{ames-hybrid-cloud} has successfully provisioned cloud-bursting
-capabilities allow users to build, test, and run codes in small allocations in cloud
+capabilities allowing users to build, test, and run codes in small allocations in cloud
 environments before running them unmodified on the production Pleiades HPC cluster.
 They leverage portable container workflows and abstract differences between cloud and
 onsite resources through the MPI interface. This pioneering effort to create
@@ -368,5 +369,13 @@ members of the Parsl and funcX teams for some of the ideas here.
 
 \bibliographystyle{IEEEtran}
 \bibliography{cise-hpc-ci}
+
+\bigskip
+
+\textbf{Todd Gamblin} received a BA degree in computer science and Japanese from Williams College, and the MS and PhD degrees in computer science from UNC Chapel Hill. He is a senior principal member of the Technical Staff with the Livermore Computing Advanced Technology Office, LLNL. His research interests include dependency management, software engineering, parallel computing, performance measurement, and performance analysis. 
+Contact him at gamblin2@llnl.gov.
+
+\textbf{Daniel S. Katz} is Assistant Director for Scientific Software and Applications with the National Center for Supercomputing Applications, and a Research Associate Professor in computer science, electrical and computer engineering, and information sciences with the University of Illinois Urbana-Champaign, Champaign, IL, USA. He received the Ph.D. degree in electrical engineering from Northwestern University, Evanston, IL, USA. His research interests include software applications, algorithms, fault tolerance, and programming in parallel and distributed computing, and policy issues, including citation and credit mechanisms and practices associated with software and data, organization and community practices for collaboration, and career paths for computing researchers. 
+Contact him at d.katz@ieee.org.
 
 \end{document}
