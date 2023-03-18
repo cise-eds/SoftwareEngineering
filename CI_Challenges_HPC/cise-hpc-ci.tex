@@ -23,7 +23,7 @@
 \editor{\normalsize{Editors: Jeffrey C. Carver, \href{mailto:carver@cs.ua.edu}{carver@cs.ua.edu}
   and Karla Morris, \href{mailto:knmorri@sandia.gov}{knmorri@sandia.gov}.}}
 
-\title{Continuous Integration Challenges for HPC}
+\title{Overcoming Challenges to Continuous Integration in HPC}
 
 \author{Todd Gamblin}
 \affil{{Lawrence Livermore National Laboratory}}
@@ -34,10 +34,10 @@
 \markboth{Software Engineering}{Continuous Integration Challenges for HPC}
 
 \begin{abstract}
- Continuous integration (CI) has become a ubiquitous practice in modern software development, with major code hosting services offering free automation on popular platforms. The benefits of CI are significant, as it enables the detection of bugs in code prior to committing changes. 
- While high-performance computing (HPC) research relies heavily on software, HPC machines are not considered "common" platforms. This presents several challenges that hinder the adoption of CI in HPC environments, making it difficult to maintain bug-free HPC projects, and resulting in adverse effects on the research community.
+ Continuous integration (CI) has become a ubiquitous practice in modern software development, with major code hosting services offering free automation on popular platforms. CI offers major benefits, as it enables detecting bugs in code prior to committing changes. 
+ While high-performance computing (HPC) research relies heavily on software, HPC machines are not considered ``common'' platforms. This presents several challenges that hinder the adoption of CI in HPC environments, making it difficult to maintain bug-free HPC projects, and resulting in adverse effects on the research community.
 In this article, we explore the challenges that impede HPC CI, such as hardware diversity, security, isolation, administrative policies, and non-standard authentication, environments, and job submission mechanisms. 
-We propose several solutions that could greatly enhance the quality of HPC software and the experience of developers. Implementing these solutions would require significant changes at HPC centers, but if these changes are made, it would ultimately enable faster and better science.
+We propose several solutions that could enhance the quality of HPC software and the experience of developers. Implementing these solutions would require significant changes at HPC centers, but if these changes are made, it would ultimately enable faster and better science.
 \end{abstract}
 
 \maketitle
@@ -76,7 +76,7 @@ Because of these and more general security concerns, HPC sites only grant access
 of known account holders. However, a large fraction of
 today's software is developed on social coding platforms like GitHub and GitLab, which
 allow a community to perform collaborative planning, development, maintenance, and
-testing. These sites not only provide infrastructure for working on code, but a large
+testing. These sites not only provide infrastructure for working on code, but offer a large
 number of free cloud CPU cycles for continuous integration (CI). Under the CI model,
 tests run when developers suggest changes, and the tests ensure that code is
 correct {\it before} it is accepted. Developers can thus have high confidence that
@@ -85,52 +85,47 @@ the code will work correctly.
 While continuous integration is standard practice for developers who can use common
 cloud environments, HPC environments introduce challenges to this practice. Technical,
 security, and political issues all make it extremely difficult to integrate externally
-developed open source software with internal applications and machines. Even though many
-HPC projects are developed in the open, they must run on closed HPC resources, and it is
-increasingly difficult to ensure that the vast majority of modern {\it open source}
+developed open-source software with internal applications and machines. Even though many
+HPC software projects are developed in the open, they must run on closed HPC resources, and it is
+increasingly difficult to ensure that the vast majority of modern {\it open-source}
 applications will run reliably on HPC systems.
 
-\section{MODERN SOFTWARE COMPLEXITY}
+\section{MODERN SOFTWARE IS COMPLEX}
 
 Modern software applications are not monolithic; they integrate packages written by many
-authors on different project teams, and they rely heavily on publicly-available open-source software. Figure~\ref{fig:ares-oss} shows the software packages used by ARES, a
+authors on different project teams, and they rely heavily on publicly available open-source software. Figure~\ref{fig:ares-oss} shows the software packages used by ARES, a
 proprietary multi-physics application used on HPC machines at Lawrence Livermore
 National Laboratory (LLNL). These packages include core scientific libraries and
 utility libraries for logging, math, I/O, programming models, performance portability,
-memory management, and other purposes. Anumber of build-time
+memory management, and other purposes. A number of build-time
 dependencies like compilers and testing frameworks are also included.
 
 Even though 30 core components of Ares are LLNL-proprietary, the other 85 packages are
 open source. Of these, 12 are publicly developed by LLNL on GitHub, and the remaining 71
 packages are open-source packages developed by others. This situation is not unusual;
-{\it most} modern software leverages and depends on open source components. It would be impossible, or at
-least impractically expensive, for a single organization to reimplement all the capabilities
-provided by the modern open-source software ecosystem.
+{\it most} modern software leverages and depends on open-source components. 
+Reimplementing all the capabilities provided by the modern open-source-software ecosystem would be impossible or at least impractically expensive for a single organization
 
-The cost of software reuse, however, is integration complexity. On a project developed
-by one team, that team makes commits to a common repository, which keeps the project consistent.
-With large, integrated systems, different teams may develop each component, and
-developers must ensure that versions of {\it all} components work together.
-Unfortunately, most open-source developers do not have access to HPC resources, and even
-if they had access, many do not have the time to manually test their packages
-in HPC-like environments. HPC developers who leverage open source software must typically be ready to do
-(sometimes extensive) porting and integration testing in order to get the open
-components to work well on closed systems.
+Software reuse comes with a cost: integration complexity.
+In a project developed by a single team, developers commit code to a common repository, maintaining project consistency. s
+In large integrated systems, however, different teams may work on individual components, and developers are responsible for ensuring that all versions of the components are compatible.
+Unfortunately, most open-source developers lack access to HPC resources, and even if they have it, many lack the time to manually test their packages in HPC-like environments. HPC developers who leverage open-source software must be prepared to perform extensive porting and integration testing to ensure that the open components work seamlessly on closed systems.
 
-\section{UNIQUENESS OF HPC SYSTEMS}
+
+\section{HPC SYSTEMS ARE UNIQUE}
 
 HPC systems are typically designed and built to meet specific local requirements, balancing
 expected workload characteristics, hardware options (e.g., number and type of CPUs, GPUs,
 and other accelerators; internal networking; storage), packaging, cooling, external networking,
 energy usage, cost, etc.
-For each system, key components of the local software stack are often bespoke.
+Key components of the local software stack are often bespoke for each system.
 For example, proprietary MPI implementations like Cray MPI can only run
-on Cray systems. In this case, Cray MPI's license does not allow inclusion in
+on Cray systems. In this case, the Cray MPI license disallows inclusion in
 containers or other software distributions that can run in the cloud. The same is true
-for math libraries and compilers in the Cray environment. There is typically no
-standard filesystem organization.  Paths to tools, libraries, home, and
+for math libraries and compilers in the Cray environment. Moreover, 
+filesystem organization is not standardized.  Paths to tools, libraries, home, and
 temporary directories are system-dependent.
-Authorization and access may be set by site policies, which are often developed locally.
+Finally, authorization and access may be set by site policies that are often developed locally.
 
 
 
@@ -232,7 +227,7 @@ lightweight, secure VM solutions (e.g., Amazon Web Service's Nitro hypervisor) w
 almost no virtualization overhead.
 
 Finally, there is only limited understanding of modern development workflows among HPC
-center leadership. It is difficult to grasp the extent to which open source has spread
+center leadership. It is difficult to grasp the extent to which open-source software has spread
 throughout the scientific software ecosystem, the rate at which modern software is
 developed, and the interdependence of packages. The idea that key science applications
 rely on externally developed software, that helping external software projects test on
@@ -286,7 +281,7 @@ systems.
 
 \subsection{Vendor and cloud support}
 
-As customers have come to rely on an increasing volume of open source, HPC vendors have
+As customers have come to rely on an increasing volume of open-source software, HPC vendors have
 shown more interest in ensuring that this software works well on the platforms
 they offer.  More cloud vendors are producing their own HPC
 offerings, where users can easily set up their own clusters in the cloud to run
