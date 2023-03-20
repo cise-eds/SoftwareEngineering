@@ -183,7 +183,7 @@ environment could give a user access to other users' files, which may be export-
 or otherwise sensitive. HPC security teams therefore disallow setting up CI
 to run arbitrary code, as it opens the site to such attacks.
 
-Running code from {\it protected} branches, e.g. the
+Running code from {\it protected} branches, e.g., the
 maintainer-approved main branch of a popular open-source project, may be allowed, but doing
 this loses the
 benefits of testing changes {\it before} they are integrated into the project. When the
@@ -331,7 +331,7 @@ onsite resources. They cannot run untrusted code without risk to onsite data.
 The solution that likely makes most sense for HPC CI is to move towards a less trusting,
 more isolated security model that would allow HPC systems to function more like clouds.
 Flexible, isolated allocations for either internal or external CI jobs would
-would eliminate the duplication of effort required by many of the potential
+eliminate the duplication of effort required by many of the potential
 approaches mentioned above. Isolated allocations also enable Infrastructure as a Service (IaaS)
 within the HPC site, which would allow sites to mock entire distributed resource manager
 environments and services. With this capability, developers could test entire workflow systems
