@@ -34,9 +34,9 @@
 \markboth{Software Engineering}{Continuous Integration Challenges for HPC}
 
 \begin{abstract}
- Continuous integration (CI) has become a ubiquitous practice in modern software development, with major code hosting services offering free automation on popular platforms. CI offers major benefits, as it enables detecting bugs in code prior to committing changes. 
+ Continuous integration (CI) has become a ubiquitous practice in modern software development, with major code hosting services offering free automation on popular platforms. CI offers major benefits, as it enables detecting bugs in code prior to committing changes.
  While high-performance computing (HPC) research relies heavily on software, HPC machines are not considered ``common'' platforms. This presents several challenges that hinder the adoption of CI in HPC environments, making it difficult to maintain bug-free HPC projects, and resulting in adverse effects on the research community.
-In this article, we explore the challenges that impede HPC CI, such as hardware diversity, security, isolation, administrative policies, and non-standard authentication, environments, and job submission mechanisms. 
+In this article, we explore the challenges that impede HPC CI, such as hardware diversity, security, isolation, administrative policies, and non-standard authentication, environments, and job submission mechanisms.
 We propose several solutions that could enhance the quality of HPC software and the experience of developers. Implementing these solutions would require significant changes at HPC centers, but if these changes are made, it would ultimately enable faster and better science.
 \end{abstract}
 
@@ -44,10 +44,11 @@ We propose several solutions that could enhance the quality of HPC software and 
 
 \begin{figure*}
   \begin{overpic}[width=\textwidth]{figs/ares-oss/ares-tricolor.pdf}
-     \put(67,0){\includegraphics[width=.3\textwidth]{figs/ares-oss/ares-tricolor-legend.pdf}}
+     \put(75,60){\includegraphics[width=.25\textwidth]{figs/ares-oss/ares-tricolor-legend.pdf}}
   \end{overpic}
-  \caption{Dependencies of the ARES multi-physics code: 72 are external open-source software (OSS), 13 are internal
-    OSS, and 31 are internal proprietary packages.
+  \caption{Dependencies of the ARES multi-physics code:
+    31 are internal proprietary packages, 13 are open-source packages developed at LLNL,
+    and together these rely on 72 external open-source software packages.
     \label{fig:ares-oss}
   }
 \end{figure*}
@@ -103,7 +104,7 @@ dependencies like compilers and testing frameworks are also included.
 Even though 30 core components of Ares are LLNL-proprietary, the other 85 packages are
 open source. Of these, 12 are publicly developed by LLNL on GitHub, and the remaining 71
 packages are open-source packages developed by others. This situation is not unusual;
-{\it most} modern software leverages and depends on open-source components. 
+{\it most} modern software leverages and depends on open-source components.
 Reimplementing all the capabilities provided by the modern open-source-software ecosystem would be impossible or at least impractically expensive for a single organization
 
 Software reuse comes with a cost: integration complexity.
@@ -122,7 +123,7 @@ Key components of the local software stack are often bespoke for each system.
 For example, proprietary MPI implementations like Cray MPI can only run
 on Cray systems. In this case, the Cray MPI license disallows inclusion in
 containers or other software distributions that can run in the cloud. The same is true
-for math libraries and compilers in the Cray environment. Moreover, 
+for math libraries and compilers in the Cray environment. Moreover,
 filesystem organization is not standardized.  Paths to tools, libraries, home, and
 temporary directories are system-dependent.
 Finally, authorization and access may be set by site policies that are often developed locally.
@@ -194,7 +195,7 @@ be very difficult to keep fast-moving projects working for HPC.
 
 \subsection{Administrative and political challenges}
 
-A number of administrative and political reasons can hinder 
+A number of administrative and political reasons can hinder
 progress on solutions to the above problems.
 First, HPC sites do not typically prioritize build
 or test cycles, because this is perceived to reduce cycles available
@@ -227,7 +228,7 @@ applications on bare metal instead of in VMs. Meanwhile, clouds have developed v
 lightweight, secure VM solutions (e.g., Amazon Web Service's Nitro hypervisor) with
 almost no virtualization overhead.
 
-Finally, HPC center leadership has limited understanding of modern development workflows. 
+Finally, HPC center leadership has limited understanding of modern development workflows.
 It is difficult to grasp the extent to which open-source software has spread
 throughout the scientific software ecosystem, the rate at which modern software is
 developed, and the interdependence of packages. The idea that key science applications
@@ -305,7 +306,7 @@ so its versatility for build and test use cases is limited. It cannot be run in 
 cloud, where adequate isolation and cycles are available.
 
 For commodity clusters, it may be easier to provide containerized reproductions of the
-production HPC environment, as there are not as many licensing issues involved. 
+production HPC environment, as there are not as many licensing issues involved.
 Since most HPC sites are still administered very manually, HPC administrators will need
 to lean into a culture of automation. If the site can provision the production environment
 automatically, they can reliably provide a container with {\it exactly} the
@@ -376,7 +377,7 @@ members of the Parsl and funcX teams for some of the ideas here.
 Contact him at tgamblin@llnl.gov.
 
 \textbf{Daniel S. Katz} is Chief Scientist at the National Center for Supercomputing Applications, and a Research Associate Professor in computer science, electrical and computer engineering, and information sciences with the University of Illinois Urbana Champaign, Urbana, IL, USA. He received the Ph.D. degree in electrical engineering from Northwestern University, Evanston, IL, USA. His research interests include software applications, algorithms, fault tolerance, and programming in parallel and distributed computing, and policy issues, including citation and credit mechanisms and practices associated with software and data, organization and community practices for collaboration, and career paths for computing researchers.
-He is a senior member of the IEEE, the IEEE Computer Society, and ACM, co-founder and current Associate Editor-in-Chief of the Journal of Open Source Software, co-founder of the US Research Software Engineer Association (US-RSE), and co-founder and steering committee chair of the Research Software Alliance (ReSA). 
+He is a senior member of the IEEE, the IEEE Computer Society, and ACM, co-founder and current Associate Editor-in-Chief of the Journal of Open Source Software, co-founder of the US Research Software Engineer Association (US-RSE), and co-founder and steering committee chair of the Research Software Alliance (ReSA).
 Contact him at d.katz@ieee.org.
 
 \end{document}

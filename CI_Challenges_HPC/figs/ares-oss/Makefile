@@ -12,6 +12,8 @@ all: $(TARGETS)
 
 %.pdf: %.dot
 	dot -Tpdf < $< > $@
+	pdfcrop $@ $@.cropped.pdf
+	mv $@.cropped.pdf $@
 
 clean:
 	rm -f $(TARGETS) *.dot

@@ -1,20 +1,24 @@
 #define EXTERNAL_OSS  fillcolor="#648fff" fontcolor="white"
 #define LLNL_OSS      fillcolor="#FFB000" fontcolor="#333333"
 #define LLNL_INTERNAL fillcolor="#dc267f" fontcolor="white"
-#define LINE          "#999999"
+#define LINE          "#777777"
 
 digraph G {
   labelloc = "b"
-  rankdir = "TB"
-  ranksep = "1"
-  edge[penwidth=4 color=LINE]
+  rankdir = "LR"
+  ratio = ".72"
+  size="10,6"
+  pad="0.3"
+  nodesep=".2"
+  ranksep=".1"
+  edge[penwidth=16 color=LINE arrowsize=6]
   node[
      fontname=Monaco,
-     penwidth=4,
-     fontsize=24,
-     margin=.2,
+     penwidth=16,
+     fontsize=196,
+     margin=.8,
      shape=box,
-     color=LINE
+     color=black,
      fillcolor=lightblue,
      style="rounded,filled"
   ]
